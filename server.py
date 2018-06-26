@@ -7,7 +7,6 @@ import os
 import traceback
 import webbrowser
 
-import tornado.web
 import tornado.websocket
 
 import methods
@@ -45,7 +44,7 @@ class WebSocket(tornado.websocket.WebSocketHandler):
             if label != 3 and tweet_id != 0: # 3 means user clicks "I don't Know"
 
                 # Load existing annotation (if it exists)
-                ann_path = '/home/raulgomez/datasets/HateSPic/HateSPicLabeler/generated_json/' + dataset + '/' + tweet_id + '.json'
+                ann_path = '../../datasets/HateSPic/HateSPicLabeler/generated_json/' + dataset + '/' + tweet_id + '.json'
 
                 if os.path.isfile(ann_path):
                     info = json.load(open(ann_path,'r'))
@@ -82,7 +81,7 @@ class WebSocket(tornado.websocket.WebSocketHandler):
                                       separators=(",", ":")))
 
 parser = argparse.ArgumentParser(description="Starts a webserver for stuff.")
-parser.add_argument("--port", type=int, default=8002, help="The port on which "
+parser.add_argument("--port", type=int, default=8080, help="The port on which "
                     "to serve the website.")
 args = parser.parse_args()
 
