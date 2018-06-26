@@ -1,9 +1,3 @@
-"""
-An entire file for you to expand. Add methods here, and the client should be
-able to call them with json-rpc without any editing to the pipeline.
-"""
-
-
+import random
 def count(number):
-    """It counts. Duh. Note: intentionally written to break on non-ints"""
-    return int(number) + 1
+    return random.randint(0, number - 1)

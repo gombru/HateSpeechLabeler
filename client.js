@@ -4,9 +4,13 @@
  * Function calls across the background TCP socket. Uses JSON RPC + a queue.
  * (I've added this extra logic to simplify expanding this)
  */
+var tweet_id;
+var dataset;
+tweet_id = 0;
+dataset = 'none';
+
 var client = {
     queue: {},
-
     // Connects to Python through the websocket
     connect: function (port) {
         var self = this;
@@ -30,16 +34,10 @@ var client = {
 
             // If the response is from "count", do stuff
             } else if (router === "count") {
-                current = $(".answer").html();
-                if (current.length === 0) {
-                    updated = jsonRpc.result;
-                } else if (current.length > 100) {
-                    updated = current.substring(current.length - 100) + ", " + jsonRpc.result;
-                } else {
-                    updated = current + ", " + jsonRpc.result;
-                }
-                $(".answer").html(updated);
-                $(".number").val(jsonRpc.result);
+                document.getElementById("tweet").textContent = jsonRpc.text;
+                document.getElementById("tweet_img").src = jsonRpc.img_url;
+                tweet_id = jsonRpc.tweet_id
+                dataset = jsonRpc.dataset
 
             // If the response is from anything else, it's currently unsupported
             } else {
@@ -61,7 +59,7 @@ var client = {
     // Placeholder function. It adds one to things.
     count: function (data) {
         var uuid = this.uuid();
-        this.socket.send(JSON.stringify({method: "count", id: uuid, params: {number: data}}));
+        this.socket.send(JSON.stringify({method: "count", id: uuid, params: {tweet_id: window.tweet_id, label: data, dataset: window.dataset, annotator_info: 'ip'}}));
         this.queue[uuid] = "count";
     }
 };

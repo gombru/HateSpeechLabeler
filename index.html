@@ -7,12 +7,22 @@
         <script src="static/client.js" type="text/javascript"></script>
     </head>
     <body>
-        <h1>Python-Javascript communication</h1>
-        <p>Counting is hard. Let Python do the heavy lifting for you.</p>
-        <input class="number" type="text" value="0" />
-        <button class="submit" onclick="javascript:client.count($('.number').val())">count</button>
-        <h3>history</h3>
-        <div class="answer"></div>
+
+    <center>
+        <div class="image_div" style="max-height: 500px" style="max-width: 500px">
+        <img id="tweet_img" src="https://i.imgur.com/1JOHqpw.png" alt="Image Not found. Click Don't know"
+            style="max-height: 500px; max-width: 500px">
+        </div>​
+        <div class="tweet_div">
+            <p id="tweet">What separates humans from animals?</p>
+        </div>
+        <br>
+        <button class="submit" onclick="javascript:client.count(1)">Hate</button>
+        <button class="submit2" onclick="javascript:client.count(0)">Not Hate</button>
+        <br>
+        <button class="dontsubmit" onclick="javascript:client.count(3)">I don't know</button>
+
+    </center>
 
         <script type="text/javascript">
             // Connect a websocket to the server. The port notation is post-
