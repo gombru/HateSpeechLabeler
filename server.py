@@ -51,7 +51,7 @@ class WebSocket(tornado.websocket.WebSocketHandler):
                     print("Updating ann file for " + str(tweet_id))
 
                 else:
-                    info = json.load(open(ann_path.replace('generated','original'),'r'))
+                    info = json.load(open(ann_path.replace('generated','filtered_original'),'r'))
 
                     print("Creating new ann file for " + str(tweet_id))
 

@@ -18,7 +18,7 @@ import random
 
 
 def get_data2label():
-    base_path = '../../datasets/HateSPic/HateSPicLabeler/original_json/'
+    base_path = '../../datasets/HateSPic/HateSPicLabeler/filtered_original_json/'
     datasets = ['HateSPic','SemiSupervised','DT','RM','WZ-LS']
 
     data2label = []
