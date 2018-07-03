@@ -81,7 +81,7 @@ class WebSocket(tornado.websocket.WebSocketHandler):
                                       separators=(",", ":")))
 
 parser = argparse.ArgumentParser(description="Starts a webserver for stuff.")
-parser.add_argument("--port", type=int, default=8080, help="The port on which "
+parser.add_argument("--port", type=int, default=45993, help="The port on which "
                     "to serve the website.")
 args = parser.parse_args()
 
@@ -89,8 +89,15 @@ handlers = [(r"/", IndexHandler), (r"/websocket", WebSocket),
             (r'/static/(.*)', tornado.web.StaticFileHandler,
              {'path': os.path.normpath(os.path.dirname(__file__))})]
 application = tornado.web.Application(handlers)
+
+# ADDED
+# http_server = tornado.httpserver.HTTPServer(application, ssl_options={
+#     "certfile": "/home/rgomez/selfsigned.crt",
+#     "keyfile": "/home/rgomez/selfsigned.key",
+# })
+
 application.listen(args.port)
 
-webbrowser.open("http://localhost:%d/" % args.port, new=2)
+webbrowser.open("https://localhost:%d/" % args.port, new=2)
 
 tornado.ioloop.IOLoop.instance().start()
