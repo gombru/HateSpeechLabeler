@@ -98,6 +98,6 @@ application = tornado.web.Application(handlers)
 
 application.listen(args.port)
 
-webbrowser.open("https://localhost:%d/" % args.port, new=2)
+webbrowser.open("http://localhost:%d/" % args.port, new=2)
 
 tornado.ioloop.IOLoop.instance().start()
