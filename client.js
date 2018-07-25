@@ -14,7 +14,7 @@ var client = {
     // Connects to Python through the websocket
     connect: function (port) {
         var self = this;
-        this.socket = new WebSocket("wss://" + window.location.hostname + ":" + port + "/websocket");
+        this.socket = new WebSocket("ws://" + window.location.hostname + ":" + port + "/websocket");
 
         this.socket.onopen = function () {
             console.log("Connected!");
