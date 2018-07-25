@@ -15,19 +15,40 @@
 import glob
 import json
 import random
+import requests
 
 
 def get_data2label():
     base_path = '../../datasets/HateSPic/HateSPicLabeler/filtered_original_json/'
     datasets = ['HateSPic','SemiSupervised','DT','RM','WZ-LS']
 
+    # Load all already annotated files
+    annotated_path = '../../datasets/HateSPic/HateSPicLabeler/generated_json/'
+    discarded_path = '../../datasets/HateSPic/HateSPicLabeler/discarded_json/'
+    already_annotated = []
+    for dataset in datasets:
+        for filename in glob.glob(annotated_path + dataset + '/' + '*.json'):
+            already_annotated.append(filename.split('/')[-1].split('.')[0])
+        for filename in glob.glob(discarded_path + dataset + '/' + '*.json'):
+            already_annotated.append(filename.split('/')[-1].split('.')[0])
+
+    print("Already annotated (and discarded) files: " + str(len(already_annotated)))
+
     data2label = []
 
     for dataset in datasets:
         c=0
         for filename in glob.glob(base_path + dataset + '/' + '*.json'):
+
+            # Check that the tweet has not been annotated yet
+            if filename.split('/')[-1].split('.')[0] in already_annotated: continue
+
             with open(filename) as data:
-                data2label.append(json.load(data))
+                info = json.load(data)
+                data2label.append(info)
+
+                # # Check that the image file exists
+                # img_data = requests.get(info['img_url']).content
                 c+=1
 
         print "Loaded: " + dataset + ". Dataset elements: " + str(c)

@@ -41,11 +41,11 @@ class WebSocket(tornado.websocket.WebSocketHandler):
             dataset = json_rpc["params"]["dataset"]
             annotator_info = json_rpc["params"]["annotator_info"]
 
+
             if label != 3 and tweet_id != 0: # 3 means user clicks "I don't Know"
 
-                # Load existing annotation (if it exists)
                 ann_path = '../../datasets/HateSPic/HateSPicLabeler/generated_json/' + dataset + '/' + tweet_id + '.json'
-
+                # Load existing annotation (if it exists)
                 if os.path.isfile(ann_path):
                     info = json.load(open(ann_path,'r'))
                     print("Updating ann file for " + str(tweet_id))
@@ -66,11 +66,18 @@ class WebSocket(tornado.websocket.WebSocketHandler):
                 json.dump(info, open(ann_path,'w'))
                 print("New annotation created " + str(tweet_id)) + " Label: " + str(label) + " Voters: " + str(info['voters'])
 
+            if label == 3: # I don't know clicked
+                ann_path = '../../datasets/HateSPic/HateSPicLabeler/generated_json/' + dataset + '/' + tweet_id + '.json'
+                dicarded_path = '../../datasets/HateSPic/HateSPicLabeler/discarded_json/' + dataset + '/' + tweet_id + '.json'
+                info = json.load(open(ann_path.replace('generated', 'filtered_original'), 'r'))
+                json.dump(info, open(dicarded_path, 'w'))
+
             generated_id = getattr(methods, json_rpc["method"])(len(data2label))
             info2send = data2label[generated_id]
             error = None
 
         except:
+            print("ERROR Writing")
             # Errors are handled by enabling the `error` flag and returning a
             # stack trace. The client can do with it what it will.
             result = traceback.format_exc()
@@ -98,6 +105,6 @@ application = tornado.web.Application(handlers)
 
 application.listen(args.port)
 
-webbrowser.open("https://localhost:%d/" % args.port, new=2)
+webbrowser.open("http://localhost:%d/" % args.port, new=2)
 
 tornado.ioloop.IOLoop.instance().start()
