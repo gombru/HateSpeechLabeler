@@ -6,8 +6,6 @@
  */
 var tweet_id;
 var dataset;
-var tweet_idx;
-tweet_idx = 0;
 tweet_id = 0;
 dataset = 'none';
 
@@ -40,7 +38,6 @@ var client = {
                 document.getElementById("tweet_img").src = jsonRpc.img_url;
                 tweet_id = jsonRpc.tweet_id
                 dataset = jsonRpc.dataset
-                tweet_idx = jsonRpc.tweet_idx
 
             // If the response is from anything else, it's currently unsupported
             } else {
@@ -62,7 +59,7 @@ var client = {
     // Placeholder function. It adds one to things.
     count: function (data) {
         var uuid = this.uuid();
-        this.socket.send(JSON.stringify({method: "count", id: uuid, params: {tweet_id: window.tweet_id, label: data, dataset: window.dataset, tweet_idx: window.tweet_idx, annotator_info: 'ipp'}}));
+        this.socket.send(JSON.stringify({method: "count", id: uuid, params: {tweet_id: window.tweet_id, label: data, dataset: window.dataset, annotator_info: 'ip'}}));
         this.queue[uuid] = "count";
     }
 };

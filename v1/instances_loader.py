@@ -12,8 +12,6 @@
 # info['original_annotation'] = label_id
 # The file is named 'id.json'
 
-# Modified to load only already annotated hate elements
-
 import glob
 import json
 import random
@@ -31,14 +29,12 @@ def download_save_image(url, image_path):
     output.close()
 
 def get_data2label():
-    base_path = '../../datasets/HateSPic/HateSPicLabeler/generated_json/'
-    # base_path = '../../datasets/HateSPic/HateSPicLabeler/generated_json_v2mm/'
-
+    base_path = '../../datasets/HateSPic/HateSPicLabeler/filtered_original_json/'
     # datasets = ['HateSPic','SemiSupervised','DT','RM','WZ-LS']
     datasets = ['HateSPic']
 
     # Load all already annotated files
-    annotated_path = '../../datasets/HateSPic/HateSPicLabeler/generated_json_v2mm/'
+    annotated_path = '../../datasets/HateSPic/HateSPicLabeler/generated_json/'
     discarded_path = '../../datasets/HateSPic/HateSPicLabeler/discarded_json/'
     already_annotated = []
     for dataset in datasets:
@@ -47,7 +43,7 @@ def get_data2label():
         for filename in glob.glob(discarded_path + dataset + '/' + '*.json'):
             already_annotated.append(filename.split('/')[-1].split('.')[0])
 
-    # print("Already annotated (and discarded) files: " + str(len(already_annotated)))
+    print("Already annotated (and discarded) files: " + str(len(already_annotated)))
 
     data2label = []
 
@@ -67,32 +63,25 @@ def get_data2label():
                 #     if w in info['text'].lower():
 
                 # Select deleted tweets
-                # try:
-                #     download_save_image(info['img_url'], "/home/raulgomez/datasets/img_test.jpg")
-                #     im = Image.open("/home/raulgomez/datasets/img_test.jpg")
-                #     print(str(c) + " out of " + str(total))
-                #     total+=1
-                # except:
-                #     # print "Failed downloading image"
-                #     data2label.append(info)
-                #     c += 1
-                #     print c
-                #     continue
+                try:
+                    download_save_image(info['img_url'], "/home/raulgomez/datasets/img_test.jpg")
+                    im = Image.open("/home/raulgomez/datasets/img_test.jpg")
+                    print(str(c) + " out of " + str(total))
+                    total+=1
+                except:
+                    # print "Failed downloading image"
+                    data2label.append(info)
+                    c += 1
+                    print c
+                    continue
 
-                # Select only hate tweets
-                if info['not_hate_votes'] >= info['hate_votes']: continue
-                # if info['mm_hate_votes'] <= info['hate_votes']: continue
-                # if info['mm_hate_votes'] <= info['not_hate_votes']: continue
-
-
-
-                data2label.append(info)
-                c+=1
+                # data2label.append(info)
+                # c+=1
                 # if c == 5: break
 
         print "Loaded: " + dataset + ". Dataset elements: " + str(c)
 
     print "All loaded. Elements: " + str(len(data2label))
-    # random.shuffle(data2label)
+    random.shuffle(data2label)
 
     return data2label
